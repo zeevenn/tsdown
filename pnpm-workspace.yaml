@@ -4,14 +4,14 @@ overrides:
 catalogs:
   dev:
     '@arethetypeswrong/core': ^0.18.2
-    '@sxzz/eslint-config': ^7.0.6
+    '@sxzz/eslint-config': ^7.1.1
     '@sxzz/prettier-config': ^2.2.3
-    '@sxzz/test-utils': ^0.5.7
+    '@sxzz/test-utils': ^0.5.9
     '@types/debug': ^4.1.12
-    '@types/node': ^24.0.14
+    '@types/node': ^24.1.0
     '@types/semver': ^7.7.0
-    bumpp: ^10.2.0
-    eslint: ^9.31.0
+    bumpp: ^10.2.1
+    eslint: ^9.32.0
     lightningcss: ^1.30.1
     pkg-types: ^2.2.0
     prettier: ^3.6.2
@@ -24,17 +24,17 @@ catalogs:
 
   docs:
     '@unocss/eslint-plugin': ^66.3.3
-    '@vueuse/core': ^13.5.0
-    oxc-minify: ^0.77.2
-    typedoc: ^0.28.7
-    typedoc-plugin-markdown: ^4.7.0
+    '@vueuse/core': ^13.6.0
+    oxc-minify: ^0.79.1
+    typedoc: ^0.28.8
+    typedoc-plugin-markdown: ^4.8.0
     typedoc-vitepress-theme: ^1.1.2
     unocss: ^66.3.3
     vite: npm:rolldown-vite@latest
     vitepress: ^2.0.0-alpha.7
     vitepress-plugin-group-icons: ^1.6.1
-    vitepress-plugin-llms: ^1.7.1
-    vue: ^3.5.17
+    vitepress-plugin-llms: ^1.7.2
+    vue: ^3.5.18
 
   prod:
     ansis: ^4.1.0
@@ -44,8 +44,8 @@ catalogs:
     diff: ^8.0.2
     empathic: ^2.0.0
     hookable: ^5.5.3
-    rolldown: ^1.0.0-beta.28
-    rolldown-plugin-dts: ^0.14.0
+    rolldown: ^1.0.0-beta.30
+    rolldown-plugin-dts: ^0.14.3
     semver: ^7.7.2
     tinyexec: ^1.0.1
     tinyglobby: ^0.2.14
