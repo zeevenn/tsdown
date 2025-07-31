@@ -56,23 +56,23 @@ export async function build(userOptions: Options = {}): Promise<void> {
   const rebuilds = await Promise.all(
     configs.map((options) => buildSingle(options, clean)),
   )
-  const cleanCbs: (() => Promise<void>)[] = []
+  const disposeCbs: (() => Promise<void>)[] = []
 
   for (const [i, config] of configs.entries()) {
     const rebuild = rebuilds[i]
     if (!rebuild) continue
 
     const watcher = await watchBuild(config, configFiles, rebuild, restart)
-    cleanCbs.push(() => watcher.close())
+    disposeCbs.push(() => watcher.close())
   }
 
-  if (cleanCbs.length) {
+  if (disposeCbs.length) {
     shortcuts(restart)
   }
 
   async function restart() {
-    for (const clean of cleanCbs) {
-      await clean()
+    for (const dispose of disposeCbs) {
+      await dispose()
     }
     build(userOptions)
   }
