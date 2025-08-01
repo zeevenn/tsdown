@@ -128,6 +128,9 @@ catalogs:
     tinyglobby:
       specifier: ^0.2.14
       version: 0.2.14
+    tree-kill:
+      specifier: ^1.2.2
+      version: 1.2.2
     unconfig:
       specifier: ^7.3.2
       version: 7.3.2
@@ -176,6 +179,9 @@ importers:
       tinyglobby:
         specifier: catalog:prod
         version: 0.2.14
+      tree-kill:
+        specifier: catalog:prod
+        version: 1.2.2
       unconfig:
         specifier: catalog:prod
         version: 7.3.2
@@ -3082,6 +3088,10 @@ packages:
   totalist@3.0.1:
     resolution: {integrity: sha512-sf4i37nQ2LBx4m3wB74y+ubopq6W/dIzXg0FDGjsYnZHVa1Da8FH853wlL2gtUhg+xJXjfk3kUZS3BRoQeoQBQ==}
     engines: {node: '>=6'}
+
+  tree-kill@1.2.2:
+    resolution: {integrity: sha512-L0Orpi8qGpRG//Nd+H90vFB+3iHnue1zSSGmNOOCh1GLJ7rUKVwV2HvijphGQS2UmhUZewS9VgvxYIdgr+fG1A==}
+    hasBin: true
 
   trim-lines@3.0.1:
     resolution: {integrity: sha512-kRj8B+YHZCc9kQYdWfJB2/oUl9rA99qbowYYBtr4ui4mZyAQ2JpvVBd/6U2YloATfqBhBTSMhTpgBHtU0Mf3Rg==}
@@ -6322,6 +6332,8 @@ snapshots:
   tokenx@1.1.0: {}
 
   totalist@3.0.1: {}
+
+  tree-kill@1.2.2: {}
 
   trim-lines@3.0.1: {}
 

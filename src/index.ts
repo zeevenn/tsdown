@@ -9,6 +9,7 @@ import {
   type RolldownPluginOption,
 } from 'rolldown'
 import { exec } from 'tinyexec'
+import treeKill from 'tree-kill'
 import { attw } from './features/attw'
 import { cleanOutDir } from './features/clean'
 import { copy } from './features/copy'
@@ -172,12 +173,16 @@ export async function buildSingle(
         nodeOptions: {
           shell: true,
           stdio: 'inherit',
-          signal: ab.signal,
         },
       })
       p.then(({ exitCode }) => {
         if (exitCode) {
           process.exitCode = exitCode
+        }
+      })
+      ab.signal.addEventListener('abort', () => {
+        if (typeof p.pid === 'number') {
+          treeKill(p.pid)
         }
       })
     } else {
