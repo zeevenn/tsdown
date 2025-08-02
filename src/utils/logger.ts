@@ -63,7 +63,7 @@ export function createLogger(
   return logger
 }
 
-export const logger: Logger = createLogger()
+export const globalLogger: Logger = createLogger()
 
 export function prettyName(name?: string): string | undefined {
   if (!name) return undefined

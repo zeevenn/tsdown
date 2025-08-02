@@ -15,6 +15,7 @@ import type {
   OutExtensionObject,
 } from '../features/output'
 import type { ReportOptions } from '../features/report'
+import type { Logger, LogLevel } from '../utils/logger'
 import type { PackageType } from '../utils/package'
 import type {
   Arrayable,
@@ -235,8 +236,22 @@ export interface Options {
    */
   loader?: ModuleTypes
 
-  /** @default false */
+  /**
+   * @default false
+   * @deprecated Use `logLevel` instead.
+   */
   silent?: boolean
+
+  /**
+   * Log level.
+   * @default 'info'
+   */
+  logLevel?: LogLevel
+  /**
+   * Custom logger.
+   */
+  customLogger?: Logger
+
   /**
    * Config file path
    */
@@ -410,7 +425,15 @@ export type NormalizedUserConfig = Exclude<UserConfig, any[]>
 export type ResolvedOptions = Omit<
   Overwrite<
     MarkPartial<
-      Omit<Options, 'publicDir' | 'workspace' | 'filter'>,
+      Omit<
+        Options,
+        | 'publicDir'
+        | 'workspace'
+        | 'filter'
+        | 'silent'
+        | 'logLevel'
+        | 'customLogger'
+      >,
       | 'globalName'
       | 'inputOptions'
       | 'outputOptions'
@@ -441,6 +464,7 @@ export type ResolvedOptions = Omit<
       pkg?: PackageJson
       exports: false | ExportsOptions
       nodeProtocol: 'strip' | boolean
+      logger: Logger
     }
   >,
   'config' | 'fromVite'

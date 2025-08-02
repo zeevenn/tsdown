@@ -5,7 +5,7 @@ import debug from 'debug'
 import { VERSION as rolldownVersion } from 'rolldown'
 import { version } from '../package.json'
 import { resolveComma, toArray } from './utils/general'
-import { logger } from './utils/logger'
+import { globalLogger } from './utils/logger'
 import type { Options } from './options'
 
 const cli = cac('tsdown')
@@ -26,7 +26,7 @@ cli
   .option('--minify', 'Minify output')
   .option('--debug [feat]', 'Show debug logs')
   .option('--target <target>', 'Bundle target, e.g "es2015", "esnext"')
-  .option('--silent', 'Suppress non-error logs')
+  .option('-l, --logLevel <level>', 'Set log level: info, warn, error, silent')
   .option('-d, --out-dir <dir>', 'Output directory', { default: 'dist' })
   .option('--treeshake', 'Tree-shake bundle', { default: true })
   .option('--sourcemap', 'Generate source map', { default: false })
@@ -60,10 +60,8 @@ cli
     'Generate export-related metadata for package.json (experimental)',
   )
   .action(async (input: string[], flags: Options) => {
-    if (flags.silent) {
-      logger.level = 'silent'
-    }
-    logger.info(
+    globalLogger.level = flags.logLevel || (flags.silent ? 'silent' : 'info')
+    globalLogger.info(
       `tsdown ${dim`v${version}`} powered by rolldown ${dim`v${rolldownVersion}`}`,
     )
     const { build } = await import('./index')
@@ -104,7 +102,7 @@ export async function runCLI(): Promise<void> {
   try {
     await cli.runMatchedCommand()
   } catch (error) {
-    logger.error(error)
+    globalLogger.error(error)
     process.exit(1)
   }
 }

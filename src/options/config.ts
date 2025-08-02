@@ -5,7 +5,7 @@ import { underline } from 'ansis'
 import { loadConfig } from 'unconfig'
 import { fsStat } from '../utils/fs'
 import { toArray } from '../utils/general'
-import { logger } from '../utils/logger'
+import { globalLogger } from '../utils/logger'
 import type {
   NormalizedUserConfig,
   Options,
@@ -36,7 +36,7 @@ export async function loadViteConfig(
     defaults: {},
   })
   if (!source) return
-  logger.info(`Using Vite config: ${underline(source)}`)
+  globalLogger.info(`Using Vite config: ${underline(source)}`)
 
   const resolved = await config
   if (typeof resolved === 'function') {
@@ -119,7 +119,7 @@ export async function loadConfigFile(
 
   const file = sources[0]
   if (file) {
-    logger.info(`Using tsdown config: ${underline(file)}`)
+    globalLogger.info(`Using tsdown config: ${underline(file)}`)
   }
   return {
     configs: config,
