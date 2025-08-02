@@ -21,8 +21,13 @@ export interface Logger {
   level: LogLevel
   info: (...args: any[]) => void
   warn: (...args: any[]) => void
+  warnOnce: (...args: any[]) => void
   error: (...args: any[]) => void
   success: (...args: any[]) => void
+}
+
+function format(msgs: any[]) {
+  return msgs.filter((arg) => arg !== undefined && arg !== false).join(' ')
 }
 
 export function createLogger(
@@ -33,31 +38,45 @@ export function createLogger(
     return customLogger
   }
 
-  function output(type: LogType, ...msgs: any[]) {
+  function output(type: LogType, msg: string) {
     const thresh = LogLevels[logger.level]
     if (thresh < LogLevels[type]) return
 
     const method = type === 'info' ? 'log' : type
-    console[method](...msgs.filter((arg) => arg !== undefined && arg !== false))
+    console[method](msg)
   }
+
+  const warnedMessages = new Set<string>()
 
   const logger: Logger = {
     level,
 
-    info(...args: any[]): void {
-      output('info', blue`ℹ`, ...args)
+    info(...msgs: any[]): void {
+      output('info', `${blue`ℹ`} ${format(msgs)}`)
     },
 
-    warn(...args: any[]): void {
-      output('warn', '\n', bgYellow` WARN `, ...args, '\n')
+    warn(...msgs: any[]): void {
+      const message = format(msgs)
+      warnedMessages.add(message)
+      output('warn', `\n${bgYellow` WARN `} ${message}\n`)
     },
 
-    error(...args: any[]): void {
-      output('error', '\n', bgRed` ERROR `, ...args, '\n')
+    warnOnce(...msgs: any[]): void {
+      const message = format(msgs)
+      if (warnedMessages.has(message)) {
+        return
+      }
+      warnedMessages.add(message)
+
+      output('warn', `\n${bgYellow` WARN `} ${message}\n`)
     },
 
-    success(...args: any[]): void {
-      output('info', green`✔`, ...args)
+    error(...msgs: any[]): void {
+      output('error', `\n${bgRed` ERROR `} ${format(msgs)}\n`)
+    },
+
+    success(...msgs: any[]): void {
+      output('info', `${green`✔`} ${format(msgs)}`)
     },
   }
   return logger
