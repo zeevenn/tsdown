@@ -2,43 +2,68 @@ import { bgRed, bgYellow, blue, green, rgb, yellow, type Ansis } from 'ansis'
 import { noop } from './general'
 import type { InternalModuleFormat } from 'rolldown'
 
-export class Logger {
-  silent: boolean = false
+export type LogType = 'error' | 'warn' | 'info'
+export type LogLevel = LogType | 'silent'
 
-  setSilent(value: boolean): void {
-    this.silent = value
-  }
-
-  filter(...args: any[]): any[] {
-    return args.filter((arg) => arg !== undefined && arg !== false)
-  }
-
-  info(...args: any[]): void {
-    if (!this.silent) {
-      console.info(blue`ℹ`, ...this.filter(...args))
-    }
-  }
-
-  warn(...args: any[]): void {
-    if (!this.silent) {
-      console.warn('\n', bgYellow` WARN `, ...this.filter(...args), '\n')
-    }
-  }
-
-  error(...args: any[]): void {
-    if (!this.silent) {
-      console.error('\n', bgRed` ERROR `, ...this.filter(...args), '\n')
-    }
-  }
-
-  success(...args: any[]): void {
-    if (!this.silent) {
-      console.info(green`✔`, ...this.filter(...args))
-    }
-  }
+export interface LoggerOptions {
+  customLogger?: Logger
+  console?: Console
 }
 
-export const logger: Logger = new Logger()
+export const LogLevels: Record<LogLevel, number> = {
+  silent: 0,
+  error: 1,
+  warn: 2,
+  info: 3,
+}
+
+export interface Logger {
+  level: LogLevel
+  info: (...args: any[]) => void
+  warn: (...args: any[]) => void
+  error: (...args: any[]) => void
+  success: (...args: any[]) => void
+}
+
+export function createLogger(
+  level: LogLevel = 'info',
+  { customLogger, console = globalThis.console }: LoggerOptions = {},
+): Logger {
+  if (customLogger) {
+    return customLogger
+  }
+
+  function output(type: LogType, ...msgs: any[]) {
+    const thresh = LogLevels[logger.level]
+    if (thresh < LogLevels[type]) return
+
+    const method = type === 'info' ? 'log' : type
+    console[method](...msgs.filter((arg) => arg !== undefined && arg !== false))
+  }
+
+  const logger: Logger = {
+    level,
+
+    info(...args: any[]): void {
+      output('info', blue`ℹ`, ...args)
+    },
+
+    warn(...args: any[]): void {
+      output('warn', '\n', bgYellow` WARN `, ...args, '\n')
+    },
+
+    error(...args: any[]): void {
+      output('error', '\n', bgRed` ERROR `, ...args, '\n')
+    },
+
+    success(...args: any[]): void {
+      output('info', green`✔`, ...args)
+    },
+  }
+  return logger
+}
+
+export const logger: Logger = createLogger()
 
 export function prettyName(name?: string): string | undefined {
   if (!name) return undefined

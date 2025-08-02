@@ -256,7 +256,7 @@ async function getBuildOptions(
     plugins.push(ShebangPlugin(cwd, name, isMultiFormat))
   }
 
-  if (report && !logger.silent) {
+  if (report && logger.level !== 'silent') {
     plugins.push(ReportPlugin(report, cwd, cjsDts, name, isMultiFormat))
   }
 

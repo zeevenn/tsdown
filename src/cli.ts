@@ -60,7 +60,9 @@ cli
     'Generate export-related metadata for package.json (experimental)',
   )
   .action(async (input: string[], flags: Options) => {
-    logger.setSilent(!!flags.silent)
+    if (flags.silent) {
+      logger.level = 'silent'
+    }
     logger.info(
       `tsdown ${dim`v${version}`} powered by rolldown ${dim`v${rolldownVersion}`}`,
     )

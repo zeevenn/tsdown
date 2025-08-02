@@ -206,7 +206,7 @@ async function resolveConfig(
   } = userConfig
 
   if (silent) {
-    logger.setSilent(true)
+    logger.level = 'silent'
   }
 
   if (typeof bundle === 'boolean') {
