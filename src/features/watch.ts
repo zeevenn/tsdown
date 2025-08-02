@@ -1,4 +1,8 @@
 import { blue } from 'ansis'
+import {
+  globalContext,
+  invalidateContextFile,
+} from 'rolldown-plugin-dts/tsc-context'
 import { debounce, toArray } from '../utils/general'
 import { logger } from '../utils/logger'
 import type { ResolvedOptions } from '../options'
@@ -48,6 +52,7 @@ export async function watchBuild(
     }
 
     logger.info(`Change detected: ${type} ${file}`)
+    invalidateContextFile(globalContext, file)
     debouncedRebuild()
   })
 
