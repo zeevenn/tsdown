@@ -205,6 +205,10 @@ async function resolveConfig(
     nodeProtocol,
   } = userConfig
 
+  if (silent) {
+    logger.setSilent(true)
+  }
+
   if (typeof bundle === 'boolean') {
     logger.warn('`bundle` option is deprecated. Use `unbundle` instead.')
   }

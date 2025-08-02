@@ -117,12 +117,6 @@ export async function loadConfigFile(
     config.push({})
   }
 
-  // If one of the configs has the `silent` option to true, set the logger to silent mode.
-  // There shouldn't be any log before this point, as that would ignore the silent option.
-  if (config.some((c) => c.silent)) {
-    logger.setSilent(true)
-  }
-
   const file = sources[0]
   if (file) {
     logger.info(`Using tsdown config: ${underline(file)}`)
