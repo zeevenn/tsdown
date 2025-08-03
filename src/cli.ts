@@ -18,7 +18,7 @@ cli
   })
   .option('-c, --config <filename>', 'Use a custom config file')
   .option('--no-config', 'Disable config file')
-  .option('-f, --format <format>', 'Bundle format: esm, cjs, iife', {
+  .option('-f, --format <format>', 'Bundle format: esm, cjs, iife, umd', {
     default: 'esm',
   })
   .option('--clean', 'Clean output directory, --no-clean to disable')
