@@ -167,6 +167,7 @@ test('fromVite', async (context) => {
   const restoreCwd = chdir(testDir)
   const options = await resolveOptions({
     config: testDir,
+    logLevel: 'silent',
   })
   expect(options.configs).toMatchObject([
     {

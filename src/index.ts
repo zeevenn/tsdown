@@ -47,6 +47,8 @@ import type { Options as DtsOptions } from 'rolldown-plugin-dts'
  * Build with tsdown.
  */
 export async function build(userOptions: Options = {}): Promise<void> {
+  globalLogger.level =
+    userOptions.logLevel || (userOptions.silent ? 'silent' : 'info')
   const { configs, files: configFiles } = await resolveOptions(userOptions)
 
   let cleanPromise: Promise<void> | undefined
