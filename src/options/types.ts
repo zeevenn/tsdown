@@ -465,6 +465,7 @@ export type ResolvedOptions = Omit<
       exports: false | ExportsOptions
       nodeProtocol: 'strip' | boolean
       logger: Logger
+      ignoreWatch: Array<string | RegExp>
     }
   >,
   'config' | 'fromVite'

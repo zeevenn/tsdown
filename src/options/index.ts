@@ -7,7 +7,7 @@ import { resolveClean } from '../features/clean'
 import { resolveEntry } from '../features/entry'
 import { resolveTarget } from '../features/target'
 import { resolveTsconfig } from '../features/tsconfig'
-import { resolveRegex, slash } from '../utils/general'
+import { resolveRegex, slash, toArray } from '../utils/general'
 import { createLogger } from '../utils/logger'
 import { normalizeFormat, readPackageJson } from '../utils/package'
 import type { Awaitable } from '../utils/types'
@@ -282,6 +282,14 @@ async function resolveConfig(
       }
     }
   }
+
+  ignoreWatch = toArray(ignoreWatch).map((ignore) => {
+    ignore = resolveRegex(ignore)
+    if (typeof ignore === 'string') {
+      return path.resolve(cwd, ignore)
+    }
+    return ignore
+  })
 
   const config: ResolvedOptions = {
     ...userConfig,

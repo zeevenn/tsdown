@@ -39,7 +39,7 @@ export async function watchBuild(
       /[\\/]\.git[\\/]/,
       /[\\/]node_modules[\\/]/,
       options.outDir,
-      ...toArray(options.ignoreWatch),
+      ...options.ignoreWatch,
     ],
   })
 
