@@ -113,7 +113,9 @@ describe('issues', () => {
       },
       options: {
         entry: ['src/dom/dom.ts', 'src/node/node.ts'],
-        dts: true,
+        dts: {
+          build: true,
+        },
       },
     })
   })
