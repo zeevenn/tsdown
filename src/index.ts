@@ -11,6 +11,7 @@ import {
 import { exec } from 'tinyexec'
 import treeKill from 'tree-kill'
 import { attw } from './features/attw'
+import { warnLegacyCJS } from './features/cjs'
 import { cleanOutDir } from './features/clean'
 import { copy } from './features/copy'
 import { writeExports, type TsdownChunks } from './features/exports'
@@ -102,6 +103,8 @@ export async function buildSingle(
   let ab: AbortController | undefined
 
   const { hooks, context } = await createHooks(config)
+
+  warnLegacyCJS(config)
 
   await rebuild(true)
   if (watch) {
