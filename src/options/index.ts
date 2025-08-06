@@ -37,11 +37,10 @@ export async function resolveOptions(options: Options): Promise<{
   configs: ResolvedOptions[]
   files: string[]
 }> {
-  const files: string[] = []
-
   debug('options %O', options)
-  debug('loading config file: %s', options.config)
+
   const { configs: rootConfigs, file } = await loadConfigFile(options)
+  const files: string[] = []
   if (file) {
     files.push(file)
     debug('loaded root config file %s', file)
