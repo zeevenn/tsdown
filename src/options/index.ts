@@ -44,7 +44,7 @@ export async function resolveOptions(options: Options): Promise<{
   if (file) {
     files.push(file)
     debug('loaded root config file %s', file)
-    debug('root configs %o', rootConfigs)
+    debug('root configs %O', rootConfigs)
   } else {
     debug('no root config file found')
   }

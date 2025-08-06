@@ -2,6 +2,7 @@ import path from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 import { green } from 'ansis'
+import Debug from 'debug'
 import {
   build as rolldownBuild,
   type BuildOptions,
@@ -42,6 +43,8 @@ import {
   type Logger,
 } from './utils/logger'
 import type { Options as DtsOptions } from 'rolldown-plugin-dts'
+
+const debug = Debug('tsdown:rolldown')
 
 /**
  * Build with tsdown.
@@ -334,10 +337,17 @@ async function getBuildOptions(
     [format, { cjsDts }],
   )
 
-  return {
+  const rolldownConfig: BuildOptions = {
     ...inputOptions,
     output: outputOptions,
   }
+  debug(
+    'rolldown config with format "%s" %O',
+    cjsDts ? 'cjs dts' : format,
+    rolldownConfig,
+  )
+
+  return rolldownConfig
 }
 
 export { defineConfig } from './config'
