@@ -24,13 +24,13 @@ catalogs:
     vitest: ^3.2.4
 
   docs:
-    '@unocss/eslint-plugin': ^66.4.1
+    '@unocss/eslint-plugin': ^66.4.2
     '@vueuse/core': ^13.6.0
-    oxc-minify: ^0.80.0
+    oxc-minify: ^0.81.0
     typedoc: ^0.28.9
     typedoc-plugin-markdown: ^4.8.0
     typedoc-vitepress-theme: ^1.1.2
-    unocss: ^66.4.1
+    unocss: ^66.4.2
     vite: npm:rolldown-vite@latest
     vitepress: ^2.0.0-alpha.7
     vitepress-plugin-group-icons: ^1.6.1
