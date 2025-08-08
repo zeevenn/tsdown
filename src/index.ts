@@ -2,13 +2,7 @@ import path from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 import { green } from 'ansis'
-import Debug from 'debug'
-import {
-  build as rolldownBuild,
-  type BuildOptions,
-  type OutputOptions,
-  type RolldownPluginOption,
-} from 'rolldown'
+import { build as rolldownBuild } from 'rolldown'
 import { exec } from 'tinyexec'
 import treeKill from 'tree-kill'
 import { attw } from './features/attw'
@@ -16,35 +10,13 @@ import { warnLegacyCJS } from './features/cjs'
 import { cleanOutDir } from './features/clean'
 import { copy } from './features/copy'
 import { writeExports, type TsdownChunks } from './features/exports'
-import { ExternalPlugin } from './features/external'
 import { createHooks } from './features/hooks'
-import { LightningCSSPlugin } from './features/lightningcss'
-import { NodeProtocolPlugin } from './features/node-protocol'
-import { resolveChunkAddon, resolveChunkFilename } from './features/output'
 import { publint } from './features/publint'
-import { ReportPlugin } from './features/report'
-import { getShimsInject } from './features/shims'
+import { getBuildOptions } from './features/rolldown'
 import { shortcuts } from './features/shortcuts'
-import { RuntimeHelperCheckPlugin } from './features/target'
 import { watchBuild } from './features/watch'
-import {
-  mergeUserOptions,
-  resolveOptions,
-  type NormalizedFormat,
-  type Options,
-  type ResolvedOptions,
-} from './options'
-import { ShebangPlugin } from './plugins'
-import { lowestCommonAncestor } from './utils/fs'
-import {
-  globalLogger,
-  LogLevels,
-  prettyName,
-  type Logger,
-} from './utils/logger'
-import type { Options as DtsOptions } from 'rolldown-plugin-dts'
-
-const debug = Debug('tsdown:rolldown')
+import { resolveOptions, type Options, type ResolvedOptions } from './options'
+import { globalLogger, prettyName, type Logger } from './utils/logger'
 
 /**
  * Build with tsdown.
@@ -198,156 +170,6 @@ export async function buildSingle(
       await onSuccess?.(config, ab.signal)
     }
   }
-}
-
-async function getBuildOptions(
-  config: ResolvedOptions,
-  format: NormalizedFormat,
-  isMultiFormat?: boolean,
-  cjsDts?: boolean,
-): Promise<BuildOptions> {
-  const {
-    entry,
-    external,
-    plugins: userPlugins,
-    outDir,
-    platform,
-    alias,
-    treeshake,
-    sourcemap,
-    dts,
-    minify,
-    unused,
-    target,
-    define,
-    shims,
-    tsconfig,
-    cwd,
-    report,
-    env,
-    nodeProtocol,
-    loader,
-    name,
-    unbundle,
-    banner,
-    footer,
-    logger,
-  } = config
-
-  const plugins: RolldownPluginOption = []
-
-  if (nodeProtocol) {
-    plugins.push(NodeProtocolPlugin(nodeProtocol))
-  }
-
-  if (config.pkg || config.skipNodeModulesBundle) {
-    plugins.push(ExternalPlugin(config))
-  }
-
-  if (dts) {
-    const { dts: dtsPlugin } = await import('rolldown-plugin-dts')
-    const options: DtsOptions = { tsconfig, ...dts }
-
-    if (format === 'es') {
-      plugins.push(dtsPlugin(options))
-    } else if (cjsDts) {
-      plugins.push(dtsPlugin({ ...options, emitDtsOnly: true }))
-    }
-  }
-  if (!cjsDts) {
-    if (unused) {
-      const { Unused } = await import('unplugin-unused')
-      plugins.push(Unused.rolldown(unused === true ? {} : unused))
-    }
-    if (target) {
-      plugins.push(
-        RuntimeHelperCheckPlugin(logger, target),
-        // Use Lightning CSS to handle CSS input. This is a temporary solution
-        // until Rolldown supports CSS syntax lowering natively.
-        await LightningCSSPlugin({ target }),
-      )
-    }
-    plugins.push(ShebangPlugin(logger, cwd, name, isMultiFormat))
-  }
-
-  if (report && LogLevels[logger.level] >= 3 /* info */) {
-    plugins.push(ReportPlugin(report, logger, cwd, cjsDts, name, isMultiFormat))
-  }
-
-  if (!cjsDts) {
-    plugins.push(userPlugins)
-  }
-
-  cjsDts = !!cjsDts
-  const inputOptions = await mergeUserOptions(
-    {
-      input: entry,
-      cwd,
-      external,
-      resolve: {
-        alias,
-        tsconfigFilename: tsconfig || undefined,
-      },
-      treeshake,
-      platform: cjsDts || format === 'cjs' ? 'node' : platform,
-      define: {
-        ...define,
-        ...Object.keys(env).reduce((acc, key) => {
-          const value = JSON.stringify(env[key])
-          acc[`process.env.${key}`] = value
-          acc[`import.meta.env.${key}`] = value
-          return acc
-        }, Object.create(null)),
-      },
-      transform: {
-        target,
-      },
-      plugins,
-      inject: {
-        ...(shims && !cjsDts && getShimsInject(format, platform)),
-      },
-      moduleTypes: loader,
-    },
-    config.inputOptions,
-    [format, { cjsDts }],
-  )
-
-  const [entryFileNames, chunkFileNames] = resolveChunkFilename(
-    config,
-    inputOptions,
-    format,
-  )
-  const outputOptions: OutputOptions = await mergeUserOptions(
-    {
-      format: cjsDts ? 'es' : format,
-      name: config.globalName,
-      sourcemap,
-      dir: outDir,
-      minify: !cjsDts && minify,
-      entryFileNames,
-      chunkFileNames,
-      preserveModules: unbundle,
-      preserveModulesRoot: unbundle
-        ? lowestCommonAncestor(...Object.values(entry))
-        : undefined,
-      banner: resolveChunkAddon(banner, format),
-      footer: resolveChunkAddon(footer, format),
-    },
-    config.outputOptions,
-    [format, { cjsDts }],
-  )
-
-  const rolldownConfig: BuildOptions = {
-    ...inputOptions,
-    output: outputOptions,
-  }
-  debug(
-    'rolldown config with format "%s" %O',
-    cjsDts ? 'cjs dts' : format,
-    rolldownConfig,
-  )
-
-  return rolldownConfig
 }
 
 export { defineConfig } from './config'
