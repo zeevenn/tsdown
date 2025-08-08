@@ -436,3 +436,15 @@ test('banner and footer option', async (context) => {
   // expect(fileMap['index.d.ts']).toContain('// dts banner')
   // expect(fileMap['index.d.ts']).toContain('// dts footer')
 })
+
+test('cjs-default', async (context) => {
+  const files = { 'index.ts': `export default 42` }
+  const { snapshot } = await testBuild({
+    context,
+    files,
+    options: {
+      format: 'cjs',
+    },
+  })
+  expect(snapshot).contains('module.exports = ')
+})
