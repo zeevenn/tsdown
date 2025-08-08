@@ -107,6 +107,7 @@ export interface Options {
    * Defaults to `'src/index.ts'` if it exists.
    */
   entry?: InputOption
+
   external?: ExternalOption
   noExternal?:
     | Arrayable<string | RegExp>
@@ -114,8 +115,15 @@ export interface Options {
         id: string,
         importer: string | undefined,
       ) => boolean | null | undefined | void)
+  /**
+   * Skip bundling `node_modules`.
+   * @default false
+   */
+  skipNodeModulesBundle?: boolean
+
   alias?: Record<string, string>
   tsconfig?: string | boolean
+
   /**
    * Specifies the target runtime platform for the build.
    *
@@ -128,34 +136,6 @@ export interface Options {
    * @see https://tsdown.dev/options/platform
    */
   platform?: 'node' | 'neutral' | 'browser'
-  inputOptions?:
-    | InputOptions
-    | ((
-        options: InputOptions,
-        format: NormalizedFormat,
-        context: { cjsDts: boolean },
-      ) => Awaitable<InputOptions | void | null>)
-
-  //#region Output Options
-
-  /** @default ['es'] */
-  format?: Format | Format[]
-  globalName?: string
-  /** @default 'dist' */
-  outDir?: string
-  /** @default false */
-  sourcemap?: Sourcemap
-  /**
-   * Clean directories before build.
-   *
-   * Default to output directory.
-   * @default true
-   */
-  clean?: boolean | string[]
-  /** @default false */
-  minify?: boolean | 'dce-only' | MinifyOptions
-  footer?: ChunkAddon
-  banner?: ChunkAddon
 
   /**
    * Specifies the compilation target environment(s).
@@ -182,6 +162,100 @@ export interface Options {
   target?: string | string[] | false
 
   /**
+   * Compile-time env variables.
+   * @example
+   * ```json
+   * {
+   *   "DEBUG": true,
+   *   "NODE_ENV": "production"
+   * }
+   * ```
+   */
+  env?: Record<string, any>
+  define?: Record<string, string>
+
+  /** @default false */
+  shims?: boolean
+
+  /**
+   * @default true
+   */
+  treeshake?: boolean
+  loader?: ModuleTypes
+
+  /**
+   * If enabled, strips the `node:` protocol prefix from import source.
+   *
+   * @default false
+   * @deprecated Use `nodeProtocol: 'strip'` instead.
+   *
+   * @example
+   * // With removeNodeProtocol enabled:
+   * import('node:fs'); // becomes import('fs')
+   */
+  removeNodeProtocol?: boolean
+
+  /**
+   * - If true, add `node:` prefix to built-in modules.
+   * - If 'strip', strips the `node:` protocol prefix from import source.
+   * - If false, does not modify the import source.
+   *
+   * @default false
+   *
+   * @example
+   * // With nodeProtocol enabled:
+   * import('fs'); // becomes import('node:fs')
+   * // With nodeProtocol set to 'strip':
+   * import('node:fs'); // becomes import('fs')
+   * // With nodeProtocol set to false:
+   * import('node:fs'); // remains import('node:fs')
+   *
+   */
+  nodeProtocol?: 'strip' | boolean
+
+  plugins?: InputOptions['plugins']
+  /**
+   * Sets how input files are processed.
+   * For example, use 'js' to treat files as JavaScript or 'base64' for images.
+   * Lets you import or require files like images or fonts.
+   * @example
+   * ```json
+   * { '.jpg': 'asset', '.png': 'base64' }
+   * ```
+   */
+
+  inputOptions?:
+    | InputOptions
+    | ((
+        options: InputOptions,
+        format: NormalizedFormat,
+        context: { cjsDts: boolean },
+      ) => Awaitable<InputOptions | void | null>)
+
+  //#region Output Options
+
+  /** @default ['es'] */
+  format?: Format | Format[]
+  globalName?: string
+  /** @default 'dist' */
+  outDir?: string
+  /** @default false */
+  sourcemap?: Sourcemap
+  /**
+   * Clean directories before build.
+   *
+   * Default to output directory.
+   * @default true
+   */
+  clean?: boolean | string[]
+  /**
+   * @default false
+   */
+  minify?: boolean | 'dce-only' | MinifyOptions
+  footer?: ChunkAddon
+  banner?: ChunkAddon
+
+  /**
    * Determines whether unbundle mode is enabled.
    * When set to true, the output files will mirror the input file structure.
    * @default false
@@ -194,17 +268,6 @@ export interface Options {
    */
   bundle?: boolean
 
-  define?: Record<string, string>
-  /** @default false */
-  shims?: boolean
-
-  /**
-   * The name to show in CLI output. This is useful for monorepos or workspaces.
-   * When using workspace mode, this option defaults to the package name from package.json.
-   * In non-workspace mode, this option must be set explicitly for the name to show in the CLI output.
-   */
-  name?: string
-
   /**
    * Use a fixed extension for output files.
    * The extension will always be `.cjs` or `.mjs`.
@@ -212,11 +275,18 @@ export interface Options {
    * @default false
    */
   fixedExtension?: boolean
+
   /**
    * Custom extensions for output files.
    * `fixedExtension` will be overridden by this option.
    */
   outExtensions?: OutExtensionFactory
+
+  /**
+   * If enabled, appends hash to chunk filenames.
+   * @default true
+   */
+  hash?: boolean
 
   /**
    * @default true
@@ -231,19 +301,21 @@ export interface Options {
         context: { cjsDts: boolean },
       ) => Awaitable<OutputOptions | void | null>)
 
-  /** @default true */
-  treeshake?: boolean
-  plugins?: InputOptions['plugins']
+  //#region CLI Options
+
   /**
-   * Sets how input files are processed.
-   * For example, use 'js' to treat files as JavaScript or 'base64' for images.
-   * Lets you import or require files like images or fonts.
-   * @example
-   * ```json
-   * { '.jpg': 'asset', '.png': 'base64' }
-   * ```
+   * The working directory of the config file.
+   * - Defaults to `process.cwd()` for root config.
+   * - Defaults to the package directory for workspace config.
    */
-  loader?: ModuleTypes
+  cwd?: string
+
+  /**
+   * The name to show in CLI output. This is useful for monorepos or workspaces.
+   * When using workspace mode, this option defaults to the package name from package.json.
+   * In non-workspace mode, this option must be set explicitly for the name to show in the CLI output.
+   */
+  name?: string
 
   /**
    * @default false
@@ -270,7 +342,16 @@ export interface Options {
    * Config file path
    */
   config?: boolean | string
-  /** @default false */
+
+  /**
+   * Reuse config from Vite or Vitest (experimental)
+   * @default false
+   */
+  fromVite?: boolean | 'vitest'
+
+  /**
+   * @default false
+   */
   watch?: boolean | Arrayable<string>
   ignoreWatch?: Arrayable<string | RegExp>
 
@@ -281,19 +362,8 @@ export interface Options {
     | string
     | ((config: ResolvedOptions, signal: AbortSignal) => void | Promise<void>)
 
-  /**
-   * Skip bundling `node_modules`.
-   * @default false
-   */
-  skipNodeModulesBundle?: boolean
-
-  /**
-   * Reuse config from Vite or Vitest (experimental)
-   * @default false
-   */
-  fromVite?: boolean | 'vitest'
-
   //#region Addons
+
   /**
    * Emit TypeScript declaration files (.d.ts).
    *
@@ -341,18 +411,6 @@ export interface Options {
   exports?: boolean | ExportsOptions
 
   /**
-   * Compile-time env variables.
-   * @example
-   * ```json
-   * {
-   *   "DEBUG": true,
-   *   "NODE_ENV": "production"
-   * }
-   * ```
-   */
-  env?: Record<string, any>
-
-  /**
    * @deprecated Alias for `copy`, will be removed in the future.
    */
   publicDir?: CopyOptions | CopyOptionsFn
@@ -374,53 +432,11 @@ export interface Options {
     | ((hooks: Hookable<TsdownHooks>) => Awaitable<void>)
 
   /**
-   * If enabled, strips the `node:` protocol prefix from import source.
-   *
-   * @default false
-   * @deprecated Use `nodeProtocol: 'strip'` instead.
-   *
-   * @example
-   * // With removeNodeProtocol enabled:
-   * import('node:fs'); // becomes import('fs')
-   */
-  removeNodeProtocol?: boolean
-
-  /**
-   * - If true, add `node:` prefix to built-in modules.
-   * - If 'strip', strips the `node:` protocol prefix from import source.
-   * - If false, does not modify the import source.
-   *
-   * @default false
-   *
-   * @example
-   * // With nodeProtocol enabled:
-   * import('fs'); // becomes import('node:fs')
-   * // With nodeProtocol set to 'strip':
-   * import('node:fs'); // becomes import('fs')
-   * // With nodeProtocol set to false:
-   * import('node:fs'); // remains import('node:fs')
-   *
-   */
-  nodeProtocol?: 'strip' | boolean
-
-  /**
-   * If enabled, appends hash to chunk filenames.
-   * @default true
-   */
-  hash?: boolean
-
-  /**
-   * The working directory of the config file.
-   * - Defaults to `process.cwd()` for root config.
-   * - Defaults to the package directory for workspace config.
-   */
-  cwd?: string
-
-  /**
    * **[experimental]** Enable workspace mode.
    * This allows you to build multiple packages in a monorepo.
    */
   workspace?: Workspace | Arrayable<string> | true
+
   /**
    * Filter workspace packages. This option is only available in workspace mode.
    */
