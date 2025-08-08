@@ -205,6 +205,7 @@ async function resolveConfig(
     unbundle = typeof bundle === 'boolean' ? !bundle : false,
     removeNodeProtocol,
     nodeProtocol,
+    cjsDefault = true,
   } = userConfig
 
   const logger = createLogger(logLevel, { customLogger, failOnWarn })
@@ -325,6 +326,7 @@ async function resolveConfig(
     exports,
     unbundle,
     nodeProtocol,
+    cjsDefault,
   }
 
   return config

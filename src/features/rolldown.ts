@@ -83,6 +83,7 @@ export async function resolveInputOptions(
     loader,
     name,
     logger,
+    cjsDefault,
   } = config
 
   const plugins: RolldownPluginOption = []
@@ -102,7 +103,13 @@ export async function resolveInputOptions(
     if (format === 'es') {
       plugins.push(dtsPlugin(options))
     } else if (cjsDts) {
-      plugins.push(dtsPlugin({ ...options, emitDtsOnly: true }))
+      plugins.push(
+        dtsPlugin({
+          ...options,
+          emitDtsOnly: true,
+          cjsDefault,
+        }),
+      )
     }
   }
   if (!cjsDts) {
@@ -171,7 +178,16 @@ export async function resolveOutputOptions(
   format: NormalizedFormat,
   cjsDts: boolean,
 ): Promise<OutputOptions> {
-  const { entry, outDir, sourcemap, minify, unbundle, banner, footer } = config
+  const {
+    entry,
+    outDir,
+    sourcemap,
+    minify,
+    unbundle,
+    banner,
+    footer,
+    cjsDefault,
+  } = config
 
   const [entryFileNames, chunkFileNames] = resolveChunkFilename(
     config,
@@ -184,6 +200,7 @@ export async function resolveOutputOptions(
       name: config.globalName,
       sourcemap,
       dir: outDir,
+      exports: cjsDefault ? 'auto' : 'named',
       minify: !cjsDts && minify,
       entryFileNames,
       chunkFileNames,

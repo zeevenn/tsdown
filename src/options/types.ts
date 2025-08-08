@@ -102,7 +102,7 @@ export interface Workspace {
  * Options for tsdown.
  */
 export interface Options {
-  /// build options
+  // #region Input Options
   /**
    * Defaults to `'src/index.ts'` if it exists.
    */
@@ -136,7 +136,8 @@ export interface Options {
         context: { cjsDts: boolean },
       ) => Awaitable<InputOptions | void | null>)
 
-  /// output options
+  //#region Output Options
+
   /** @default ['es'] */
   format?: Format | Format[]
   globalName?: string
@@ -153,6 +154,9 @@ export interface Options {
   clean?: boolean | string[]
   /** @default false */
   minify?: boolean | 'dce-only' | MinifyOptions
+  footer?: ChunkAddon
+  banner?: ChunkAddon
+
   /**
    * Specifies the compilation target environment(s).
    *
@@ -213,6 +217,11 @@ export interface Options {
    * `fixedExtension` will be overridden by this option.
    */
   outExtensions?: OutExtensionFactory
+
+  /**
+   * @default true
+   */
+  cjsDefault?: boolean
 
   outputOptions?:
     | OutputOptions
@@ -284,7 +293,7 @@ export interface Options {
    */
   fromVite?: boolean | 'vitest'
 
-  /// addons
+  //#region Addons
   /**
    * Emit TypeScript declaration files (.d.ts).
    *
@@ -416,8 +425,6 @@ export interface Options {
    * Filter workspace packages. This option is only available in workspace mode.
    */
   filter?: RegExp | string | string[]
-  footer?: ChunkAddon
-  banner?: ChunkAddon
 }
 
 /**
