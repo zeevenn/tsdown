@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url'
 import { expectFilesSnapshot } from '@sxzz/test-utils'
 import { glob } from 'tinyglobby'
 import { build, type Options } from '../src/index'
+import type { RollupLog } from 'rolldown'
 import type { RunnerTask, TestContext } from 'vitest'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -123,18 +124,29 @@ export async function testBuild({
   outputDir: string
   snapshot: string
   fileMap: Record<string, string>
+  warnings: RollupLog[]
 }> {
   const { expect } = context
   const { testName, testDir } = await writeFixtures(context, files, fixture)
 
   const workingDir = path.join(testDir, cwd || '.')
   const restoreCwd = chdir(workingDir)
+  const warnings: RollupLog[] = []
   const resolvedOptions: Options = {
     entry: 'index.ts',
     config: false,
     outDir: 'dist',
     dts: false,
     silent: true,
+    inputOptions: {
+      onLog(level, log, defaultHandler) {
+        if (level === 'warn') {
+          warnings.push(log)
+          return
+        }
+        defaultHandler(level, log)
+      },
+    },
     ...(typeof options === 'function' ? options(workingDir) : options),
   }
   await beforeBuild?.()
@@ -159,6 +171,7 @@ export async function testBuild({
     outputDir,
     snapshot,
     fileMap,
+    warnings,
   }
 }
 

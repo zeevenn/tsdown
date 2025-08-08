@@ -22,7 +22,7 @@ describe('shims', () => {
   })
 
   test('cjs on node w/o shims', async (context) => {
-    const { snapshot } = await testBuild({
+    const { snapshot, warnings } = await testBuild({
       context,
       files: { 'index.ts': code },
       options: {
@@ -32,6 +32,11 @@ describe('shims', () => {
     })
     expect(snapshot).contain('require("url").pathToFileURL(__filename).href')
     expect(snapshot).not.contain('import.meta')
+    expect(warnings).toMatchObject([
+      {
+        code: 'EMPTY_IMPORT_META',
+      },
+    ])
   })
 
   test('cjs on neutral w/o shims', async (context) => {
