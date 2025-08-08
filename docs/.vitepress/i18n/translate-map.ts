@@ -27,6 +27,7 @@ export const zhCN = {
   'Declaration Files (dts)': '声明文件（dts）',
   'Package Exports': '包导出（Package Exports）',
   Unbundle: '非打包模式（Unbundle）',
+  'CJS Default Export': 'CJS 默认导出',
 
   Recipes: '实践指南',
   'Vue Support': 'Vue 支持',

@@ -3,8 +3,36 @@
 ```cjs
 
 //#region index.ts
-var cjs_default_default = 42;
+function hello() {
+	console.log("Hello!");
+}
 
 //#endregion
-module.exports = cjs_default_default;
+module.exports = hello;
+```
+## index.d.cts
+
+```cts
+//#region index.d.ts
+declare function hello(): void;
+export = hello;
+```
+## index.d.ts
+
+```ts
+//#region index.d.ts
+declare function hello(): void;
+//#endregion
+export { hello as default };
+```
+## index.js
+
+```js
+//#region index.ts
+function hello() {
+	console.log("Hello!");
+}
+
+//#endregion
+export { hello as default };
 ```

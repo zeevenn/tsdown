@@ -73,18 +73,18 @@ test('bundle dts', async (context) => {
   })
 })
 
-test('cjs interop', async (context) => {
+test('cjs default', async (context) => {
   const files = {
-    'index.ts': `
-    export default {}
-    export type Foo = string
-    `,
+    'index.ts': `export default function hello(): void {
+      console.log('Hello!')
+    }`,
   }
   await testBuild({
     context,
     files,
     options: {
       format: ['esm', 'cjs'],
+      dts: true,
     },
   })
 })
@@ -435,16 +435,4 @@ test('banner and footer option', async (context) => {
 
   // expect(fileMap['index.d.ts']).toContain('// dts banner')
   // expect(fileMap['index.d.ts']).toContain('// dts footer')
-})
-
-test('cjs-default', async (context) => {
-  const files = { 'index.ts': `export default 42` }
-  const { snapshot } = await testBuild({
-    context,
-    files,
-    options: {
-      format: 'cjs',
-    },
-  })
-  expect(snapshot).contains('module.exports = ')
 })
