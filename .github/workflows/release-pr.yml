@@ -1,0 +1,10 @@
+name: Publish Any Commit
+on: [push, pull_request]
+
+permissions: {}
+
+jobs:
+  release:
+    uses: sxzz/workflows/.github/workflows/release-pr.yml@v1
+    with:
+      compact: true
