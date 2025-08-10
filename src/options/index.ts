@@ -95,6 +95,7 @@ async function resolveWorkspace(
         patterns: '**/package.json',
         ignore: exclude,
         cwd: rootCwd,
+        expandDirectories: false,
       })
     )
       .filter((file) => file !== 'package.json') // exclude root package.json
@@ -107,6 +108,7 @@ async function resolveWorkspace(
         cwd: rootCwd,
         onlyDirectories: true,
         absolute: true,
+        expandDirectories: false,
       })
     ).map((file) => slash(path.resolve(file)))
   }
