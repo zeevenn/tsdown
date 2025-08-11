@@ -29,5 +29,5 @@ export { type GlobOptions };
 ## index.js
 
 ```js
-
+export {  };
 ```

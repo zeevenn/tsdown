@@ -433,6 +433,6 @@ test('banner and footer option', async (context) => {
   expect(fileMap['index.js']).toContain('// js banner')
   expect(fileMap['index.js']).toContain('// js footer')
 
-  // expect(fileMap['index.d.ts']).toContain('// dts banner')
-  // expect(fileMap['index.d.ts']).toContain('// dts footer')
+  expect(fileMap['index.d.ts']).toContain('// dts banner')
+  expect(fileMap['index.d.ts']).toContain('// dts footer')
 })

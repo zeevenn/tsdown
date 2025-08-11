@@ -12,5 +12,5 @@
 ## index.js
 
 ```js
-
+export {  };
 ```

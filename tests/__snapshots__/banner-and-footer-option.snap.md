@@ -1,7 +1,9 @@
 ## index.d.ts
 
 ```ts
-export { };
+// dts banner
+export {};
+// dts footer
 ```
 ## index.js
 
@@ -11,5 +13,6 @@ export { };
 console.log("Hello, world!");
 
 //#endregion
+export {  };
 // js footer
 ```

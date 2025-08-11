@@ -32,4 +32,5 @@ foo("hello world");
 foo$1("hello world");
 
 //#endregion
+export {  };
 ```
