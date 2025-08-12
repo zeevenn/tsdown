@@ -76,7 +76,7 @@ onKeyStroke('Escape', () => {
         <div class="modal-content">
           <iframe
             class="video-iframe"
-            :src="`https://www.youtube.com/embed/${VIDEO_ID}?autoplay=1&modestbranding=1&rel=0&cc_lang_pref=${lang}&hl=${lang}`"
+            :src="`https://www.youtube.com/embed/${VIDEO_ID}?autoplay=1&rel=0&cc_lang_pref=${lang}&hl=${lang}`"
             title="YouTube video player"
             frameborder="0"
             allow="autoplay; picture-in-picture"
