@@ -15,6 +15,7 @@ await rm('reference/api/index.md', { force: true })
 await rm('reference/api/_media', { recursive: true, force: true })
 
 for (const language of LANGUAGES) {
+  await rm(`${language}/reference/api`, { recursive: true, force: true })
   await cp(`reference/api`, `${language}/reference/api`, {
     recursive: true,
     force: true,
