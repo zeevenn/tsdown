@@ -181,6 +181,16 @@ export interface Options {
    * @default true
    */
   treeshake?: boolean
+
+  /**
+   * Sets how input files are processed.
+   * For example, use 'js' to treat files as JavaScript or 'base64' for images.
+   * Lets you import or require files like images or fonts.
+   * @example
+   * ```json
+   * { '.jpg': 'asset', '.png': 'base64' }
+   * ```
+   */
   loader?: ModuleTypes
 
   /**
@@ -214,15 +224,6 @@ export interface Options {
   nodeProtocol?: 'strip' | boolean
 
   plugins?: InputOptions['plugins']
-  /**
-   * Sets how input files are processed.
-   * For example, use 'js' to treat files as JavaScript or 'base64' for images.
-   * Lets you import or require files like images or fonts.
-   * @example
-   * ```json
-   * { '.jpg': 'asset', '.png': 'base64' }
-   * ```
-   */
 
   inputOptions?:
     | InputOptions
