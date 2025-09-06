@@ -16,6 +16,7 @@
   "author": "三咲智子 Kevin Deng <sxzz@sxzz.moe>",
   "funding": "https://github.com/sponsors/sxzz",
   "files": [
+    "client.d.ts",
     "dist",
     "esm-shims.js"
   ],
@@ -27,7 +28,8 @@
     "./config": "./dist/config.mjs",
     "./plugins": "./dist/plugins.mjs",
     "./run": "./dist/run.mjs",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./client": "./client.d.ts"
   },
   "typesVersions": {
     "*": {

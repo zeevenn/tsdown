@@ -11,7 +11,12 @@ export default defineConfig({
     ],
   },
   publint: true,
-  exports: true,
+  exports: {
+    customExports(exports) {
+      exports['./client'] = './client.d.ts'
+      return exports
+    },
+  },
   fixedExtension: true,
   onSuccess() {
     console.info('🙏 Build succeeded!')

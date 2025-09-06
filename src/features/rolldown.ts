@@ -1,4 +1,5 @@
 import Debug from 'debug'
+import { importGlobPlugin } from 'rolldown/experimental'
 import {
   mergeUserOptions,
   type DtsOptions,
@@ -125,7 +126,10 @@ export async function resolveInputOptions(
         await LightningCSSPlugin({ target }),
       )
     }
-    plugins.push(ShebangPlugin(logger, cwd, name, isMultiFormat))
+    plugins.push(
+      ShebangPlugin(logger, cwd, name, isMultiFormat),
+      importGlobPlugin(),
+    )
   }
 
   if (report && LogLevels[logger.level] >= 3 /* info */) {
