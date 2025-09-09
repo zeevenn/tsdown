@@ -2,29 +2,29 @@
 
 ```ts
 export * from "unconfig";
-
-//#region ../../../node_modules/.pnpm/tinyglobby@0.2.14/node_modules/tinyglobby/dist/index.d.mts
-
-//#endregion
-//#region src/index.d.ts
-// #endregion
-// #region log
-interface GlobOptions {
-  absolute?: boolean;
+type Options = {
+  /**
+  * The CWD for the operation.
+  * @default "." (process.cwd)
+  */
   cwd?: string;
-  patterns?: string | string[];
-  ignore?: string | string[];
-  dot?: boolean;
-  deep?: number;
-  followSymbolicLinks?: boolean;
-  caseSensitiveMatch?: boolean;
-  expandDirectories?: boolean;
-  onlyDirectories?: boolean;
-  onlyFiles?: boolean;
-  debug?: boolean;
-}
-//#endregion
-export { type GlobOptions };
+  /**
+  * The last directory to traverse.
+  *
+  * > [NOTE]
+  * > This directory is INCLUSIVE.
+  *
+  * @default "/"
+  */
+  last?: string;
+};
+/**
+* Get all parent directories of {@link base}.
+* Stops after {@link Options['last']} is processed.
+*
+* @returns An array of absolute paths of all parent directories.
+*/
+export { type Options };
 ```
 ## index.js
 

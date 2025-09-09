@@ -27,13 +27,13 @@ catalogs:
     vitest: ^3.2.4
 
   docs:
-    '@unocss/eslint-plugin': ^66.5.0
+    '@unocss/eslint-plugin': ^66.5.1
     '@vueuse/core': ^13.9.0
-    oxc-minify: ^0.86.0
+    oxc-minify: ^0.87.0
     typedoc: ^0.28.12
     typedoc-plugin-markdown: ^4.8.1
     typedoc-vitepress-theme: ^1.1.2
-    unocss: ^66.5.0
+    unocss: ^66.5.1
     vite: npm:rolldown-vite@latest
     vitepress: ^2.0.0-alpha.12
     vitepress-plugin-group-icons: ^1.6.3
@@ -53,7 +53,7 @@ catalogs:
     rolldown-plugin-dts: ^0.16.1
     semver: ^7.7.2
     tinyexec: ^1.0.1
-    tinyglobby: ^0.2.14
+    tinyglobby: ^0.2.15
     tree-kill: ^1.2.2
     unconfig: ^7.3.3
 
