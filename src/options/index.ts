@@ -215,6 +215,12 @@ async function resolveConfig(
     logger.warn('`bundle` option is deprecated. Use `unbundle` instead.')
   }
 
+  if (removeNodeProtocol && nodeProtocol) {
+    throw new TypeError(
+      '`removeNodeProtocol` is deprecated. Please only use `nodeProtocol` instead.',
+    )
+  }
+
   // Resolve nodeProtocol option with backward compatibility for removeNodeProtocol
   nodeProtocol =
     nodeProtocol ??

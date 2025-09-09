@@ -213,9 +213,9 @@ export interface Options {
   removeNodeProtocol?: boolean
 
   /**
-   * - If true, add `node:` prefix to built-in modules.
-   * - If 'strip', strips the `node:` protocol prefix from import source.
-   * - If false, does not modify the import source.
+   * - If `true`, add `node:` prefix to built-in modules.
+   * - If `'strip'`, strips the `node:` protocol prefix from import source.
+   * - If `false`, does not modify the import source.
    *
    * @default false
    *
