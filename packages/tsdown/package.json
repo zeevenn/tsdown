@@ -60,30 +60,6 @@
     "docs:preview": "pnpm -C docs run preview",
     "docs:generate": "pnpm -C docs run generate"
   },
-  "peerDependencies": {
-    "@arethetypeswrong/core": "^0.18.1",
-    "publint": "^0.3.0",
-    "typescript": "^5.0.0",
-    "unplugin-lightningcss": "^0.4.0",
-    "unplugin-unused": "^0.5.0"
-  },
-  "peerDependenciesMeta": {
-    "@arethetypeswrong/core": {
-      "optional": true
-    },
-    "publint": {
-      "optional": true
-    },
-    "typescript": {
-      "optional": true
-    },
-    "unplugin-lightningcss": {
-      "optional": true
-    },
-    "unplugin-unused": {
-      "optional": true
-    }
-  },
   "dependencies": {
     "ansis": "catalog:prod",
     "cac": "catalog:prod",
@@ -99,30 +75,6 @@
     "tinyglobby": "catalog:prod",
     "tree-kill": "catalog:prod",
     "unconfig": "catalog:prod"
-  },
-  "devDependencies": {
-    "@arethetypeswrong/core": "catalog:dev",
-    "@sxzz/eslint-config": "catalog:dev",
-    "@sxzz/prettier-config": "catalog:dev",
-    "@sxzz/test-utils": "catalog:dev",
-    "@types/debug": "catalog:dev",
-    "@types/node": "catalog:dev",
-    "@types/semver": "catalog:dev",
-    "@unocss/eslint-plugin": "catalog:docs",
-    "@vueuse/core": "catalog:docs",
-    "bumpp": "catalog:dev",
-    "eslint": "catalog:dev",
-    "lightningcss": "catalog:dev",
-    "pkg-types": "catalog:dev",
-    "prettier": "catalog:dev",
-    "publint": "catalog:dev",
-    "tsx": "catalog:dev",
-    "typescript": "catalog:dev",
-    "unocss": "catalog:docs",
-    "unplugin-lightningcss": "catalog:dev",
-    "unplugin-unused": "catalog:dev",
-    "vite": "catalog:docs",
-    "vitest": "catalog:dev"
   },
   "engines": {
     "node": ">=20.19.0"

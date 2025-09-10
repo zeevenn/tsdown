@@ -15,36 +15,6 @@
   },
   "author": "三咲智子 Kevin Deng <sxzz@sxzz.moe>",
   "funding": "https://github.com/sponsors/sxzz",
-  "files": [
-    "client.d.ts",
-    "dist",
-    "esm-shims.js"
-  ],
-  "main": "./dist/index.mjs",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.mts",
-  "exports": {
-    ".": "./dist/index.mjs",
-    "./config": "./dist/config.mjs",
-    "./plugins": "./dist/plugins.mjs",
-    "./run": "./dist/run.mjs",
-    "./package.json": "./package.json",
-    "./client": "./client.d.ts"
-  },
-  "typesVersions": {
-    "*": {
-      "*": [
-        "./dist/*",
-        "./*"
-      ]
-    }
-  },
-  "bin": {
-    "tsdown": "./dist/run.mjs"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
   "scripts": {
     "lint": "eslint --cache --max-warnings 0 .",
     "lint:fix": "pnpm run lint --fix",
@@ -84,22 +54,6 @@
     "unplugin-unused": {
       "optional": true
     }
-  },
-  "dependencies": {
-    "ansis": "catalog:prod",
-    "cac": "catalog:prod",
-    "chokidar": "catalog:prod",
-    "debug": "catalog:prod",
-    "diff": "catalog:prod",
-    "empathic": "catalog:prod",
-    "hookable": "catalog:prod",
-    "rolldown": "catalog:prod",
-    "rolldown-plugin-dts": "catalog:prod",
-    "semver": "catalog:prod",
-    "tinyexec": "catalog:prod",
-    "tinyglobby": "catalog:prod",
-    "tree-kill": "catalog:prod",
-    "unconfig": "catalog:prod"
   },
   "devDependencies": {
     "@arethetypeswrong/core": "catalog:dev",
