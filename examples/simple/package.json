@@ -19,6 +19,6 @@
     "dev": "tsdown --watch"
   },
   "devDependencies": {
-    "tsdown": "latest"
+    "tsdown": "workspace:*"
   }
 }

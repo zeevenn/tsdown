@@ -16,6 +16,10 @@
     "verbatimModuleSyntax": true,
     "skipLibCheck": true
   },
-  "include": ["src", "tests", "client.d.ts"],
+  "include": [
+    "packages/*/src",
+    "packages/*/tests",
+    "packages/tsdown/client.d.ts"
+  ],
   "exclude": ["**/temp", "**/fixtures"]
 }

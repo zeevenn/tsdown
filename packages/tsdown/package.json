@@ -1,6 +1,6 @@
 {
+  "name": "tsdown",
   "version": "0.14.2",
-  "private": true,
   "packageManager": "pnpm@10.15.1",
   "description": "The Elegant Bundler for Libraries",
   "type": "module",
@@ -58,8 +58,7 @@
     "docs:dev": "pnpm -C docs run dev",
     "docs:build": "pnpm -C docs run build",
     "docs:preview": "pnpm -C docs run preview",
-    "docs:generate": "pnpm -C docs run generate",
-    "postinstall": "pnpm -C packages/tsdown run build"
+    "docs:generate": "pnpm -C docs run generate"
   },
   "peerDependencies": {
     "@arethetypeswrong/core": "^0.18.1",
